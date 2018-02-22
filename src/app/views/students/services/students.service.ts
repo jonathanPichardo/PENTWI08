@@ -1,90 +1,84 @@
-import {
-  Injectable
-} from '@angular/core';
+import { Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
 
 import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-  DocumentChangeAction,
-  AngularFirestoreDocument
+    AngularFirestore,
+    AngularFirestoreCollection,
+    DocumentChangeAction,
+    AngularFirestoreDocument
 } from 'angularfire2/firestore';
 
-import {
-  Observable
-} from 'rxjs/Observable';
 
 @Injectable()
 export class StudentsService {
 
-  private _collection: AngularFirestoreCollection < WriteStudentDto > ;
+    private _collection: AngularFirestoreCollection < WriteStudentDto > ;
 
-  constructor(private angularFirestore: AngularFirestore) {}
+    constructor(private angularFirestore: AngularFirestore) {}
 
-  private get collection(): AngularFirestoreCollection < WriteStudentDto > {
+    private get collection(): AngularFirestoreCollection < WriteStudentDto > {
 
-    if (!this._collection)
-      this._collection = this.angularFirestore.collection < WriteStudentDto > ('students');
+        if (!this._collection)
+            this._collection = this.angularFirestore.collection < WriteStudentDto > ('students');
 
-    return this._collection;
-  }
+        return this._collection;
+    }
 
-  private getDoc(id: string) {
-    return this.angularFirestore.doc < WriteStudentDto > (`students/${id}`);
-  }
+    private getDoc(id: string) {
+        return this.angularFirestore.doc < WriteStudentDto > (`students/${id}`);
+    }
 
-  getAll(): Observable < ReadStudentDto[] > {
-    return this.collection.snapshotChanges()
-      .map(actions => actions.map(action => {
+    getAll(): Observable < ReadStudentDto[] > {
+        return this.collection.snapshotChanges()
+            .map(actions => actions.map(action => {
 
-        const id = action.payload.doc.id;
-        const data = action.payload.doc.data() as WriteStudentDto;
+                const id = action.payload.doc.id;
+                const data = action.payload.doc.data() as WriteStudentDto;
 
-        return {
-          id,
-          ...data
-        };
+                return {
+                    id,
+                    ...data
+                };
 
-      }));
-  }
+            }));
+    }
 
-  add(student: WriteStudentDto) {
-    this.collection.add({ ...student
-    });
-  }
+    add(student: WriteStudentDto) {
+        this.collection.add({ ...student
+        });
+    }
 
-  getById(id: string): Observable < ReadStudentDto > {
-    return this.getDoc(id).snapshotChanges()
-      .map(action => {
+    getById(id: string): Observable < ReadStudentDto > {
+        return this.getDoc(id).snapshotChanges()
+            .map(action => {
 
-        const id = action.payload.id;
-        const data = action.payload.data() as WriteStudentDto;
+                const id = action.payload.id;
+                const data = action.payload.data() as WriteStudentDto;
 
-        return {
-          id,
-          ...data
-        };
+                return { id, ...data };
 
-      });
-  }
+            });
+    }
 
-  delete(id: string) {
-    return this.getDoc(id).delete();
-  }
+    delete(id: string) {
+        return this.getDoc(id).delete();
+    }
 
-  update(id: string, student: WriteStudentDto){
-    return this.getDoc(id).update(student);
-  }
+    update(id: string, student: WriteStudentDto) {
+        return this.getDoc(id).update(student);
+    }
 
 }
 
 export class WriteStudentDto {
-  public studentNumber: string;
-  public firstName: string;
-  public lastName: string;
-  public email: string;
-  public genre: string;
+    public studentNumber: string;
+    public firstName: string;
+    public lastName: string;
+    public email: string;
+    public genre: string;
 }
 
 export class ReadStudentDto extends WriteStudentDto {
-  public id: string
+    public id: string
 }

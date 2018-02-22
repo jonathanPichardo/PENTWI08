@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
 
 import { Subject } from 'rxjs/Subject';
 import { switchMap, takeUntil, first } from 'rxjs/operators';
@@ -17,6 +18,8 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
 
     private currentStudentId: string;
     public student: WriteStudentDto = new WriteStudentDto();
+
+    public email = new FormControl('', [Validators.required, Validators.email]);
 
     constructor(
         private readonly studentService: StudentsService,
