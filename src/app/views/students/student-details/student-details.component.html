@@ -1,0 +1,15 @@
+<form>
+  <mat-form-field class="example-full-width">
+    <input matInput  placeholder="Student Number" [(ngModel)]="student.studentNumber" name="studentNumber" />
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <input matInput  placeholder="First Name" [(ngModel)]="student.firstName" name="firstName" />
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <input matInput  placeholder="Last Name" [(ngModel)]="student.lastName" name="lastName" />
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <input matInput  placeholder="Email" [(ngModel)]="student.email" name="email" />
+  </mat-form-field>
+  <button mat-button (click)="save()">Save</button>
+</form>
